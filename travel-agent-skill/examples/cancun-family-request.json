@@ -1,0 +1,54 @@
+{
+  "origin": "Zacualtipán de Ángeles, Hidalgo, México",
+  "destination": "Cancún / Riviera Maya, Quintana Roo, México",
+  "date_window": {
+    "start": "2026-12-28",
+    "end": "2027-01-05",
+    "flexible": false
+  },
+  "travelers": {
+    "adults": 4,
+    "children": 0,
+    "infants": 0
+  },
+  "budget": {
+    "total": 60000,
+    "currency": "MXN"
+  },
+  "departure_airports_to_compare": [
+    "NLU",
+    "MEX"
+  ],
+  "trip_style": [
+    "beach",
+    "relaxed",
+    "some_activities"
+  ],
+  "interests": [
+    "playa",
+    "cenotes",
+    "gastronomía",
+    "una excursión memorable"
+  ],
+  "must_do": [],
+  "avoid": [
+    "escalas largas",
+    "traslados innecesarios"
+  ],
+  "pace": "balanced",
+  "lodging_preferences": {
+    "preferred_area": "por decidir según costo total y logística",
+    "all_inclusive": "optional",
+    "minimum_rating": 4.0
+  },
+  "transport_preferences": {
+    "prefer_direct_flights": true,
+    "compare_airport_ground_cost": true
+  },
+  "baggage_needs": "confirmar antes de reservar",
+  "notes": [
+    "El agente debe comparar el costo puerta-a-puerta desde Zacualtipán, no solo la tarifa aérea.",
+    "Por ser temporada alta de fin de año, marcar precios y disponibilidad como altamente variables.",
+    "El itinerario debe dejar margen por posibles saturaciones de Año Nuevo."
+  ]
+}
