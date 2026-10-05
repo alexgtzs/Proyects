@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/travel-agent/trip-plan.schema.json",
+  "title": "Travel Agent Trip Plan",
+  "type": "object",
+  "required": ["request", "options", "recommendation", "budget", "itinerary", "uncertainties"],
+  "properties": {
+    "request": {
+      "type": "object",
+      "required": ["origin", "date_window", "travelers"],
+      "properties": {
+        "origin": {"type": "string"},
+        "destination": {"type": ["string", "null"]},
+        "destination_open": {"type": "boolean", "default": false},
+        "date_window": {
+          "type": "object",
+          "required": ["start", "end"],
+          "properties": {
+            "start": {"type": "string", "format": "date"},
+            "end": {"type": "string", "format": "date"},
+            "flexible": {"type": "boolean", "default": false}
+          }
+        },
+        "travelers": {
+          "type": "object",
+          "required": ["adults"],
+          "properties": {
+            "adults": {"type": "integer", "minimum": 1},
+            "children": {"type": "integer", "minimum": 0, "default": 0},
+            "infants": {"type": "integer", "minimum": 0, "default": 0}
+          }
+        },
+        "budget": {
+          "type": ["object", "null"],
+          "properties": {
+            "total": {"type": "number", "minimum": 0},
+            "currency": {"type": "string", "minLength": 3, "maxLength": 3}
+          }
+        },
+        "interests": {"type": "array", "items": {"type": "string"}},
+        "must_do": {"type": "array", "items": {"type": "string"}},
+        "avoid": {"type": "array", "items": {"type": "string"}},
+        "pace": {"enum": ["relaxed", "balanced", "intensive", "unknown"]},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "options": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/travelOption"}
+    },
+    "recommendation": {
+      "type": "object",
+      "required": ["option_id", "reason"],
+      "properties": {
+        "option_id": {"type": "string"},
+        "reason": {"type": "string"},
+        "booking_priority": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "budget": {
+      "type": "object",
+      "required": ["currency", "estimated_total", "items"],
+      "properties": {
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "estimated_total": {"type": "number", "minimum": 0},
+        "per_person": {"type": "number", "minimum": 0},
+        "contingency": {"type": "number", "minimum": 0},
+        "remaining_from_user_budget": {"type": ["number", "null"]},
+        "items": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/budgetItem"}
+        }
+      }
+    },
+    "itinerary": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/dayPlan"}
+    },
+    "uncertainties": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item", "status"],
+        "properties": {
+          "item": {"type": "string"},
+          "status": {"$ref": "#/$defs/certainty"},
+          "action": {"type": "string"}
+        }
+      }
+    },
+    "generated_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "certainty": {
+      "enum": ["CONFIRMED_CURRENT", "REFERENCE_CURRENT", "ESTIMATED", "NEEDS_CONFIRMATION"]
+    },
+    "money": {
+      "type": "object",
+      "required": ["amount", "currency", "certainty"],
+      "properties": {
+        "amount": {"type": "number", "minimum": 0},
+        "currency": {"type": "string", "minLength": 3, "maxLength": 3},
+        "certainty": {"$ref": "#/$defs/certainty"}
+      }
+    },
+    "travelOption": {
+      "type": "object",
+      "required": ["id", "title", "score", "pros", "cons"],
+      "properties": {
+        "id": {"type": "string"},
+        "title": {"type": "string"},
+        "score": {"type": "number", "minimum": 0, "maximum": 100},
+        "transport": {"type": "object"},
+        "lodging": {"type": "object"},
+        "effective_trip_cost": {"$ref": "#/$defs/money"},
+        "pros": {"type": "array", "items": {"type": "string"}},
+        "cons": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "budgetItem": {
+      "type": "object",
+      "required": ["category", "cost"],
+      "properties": {
+        "category": {
+          "enum": ["main_transport", "lodging", "local_transport", "activities", "food", "insurance_visas_fees", "extras", "contingency"]
+        },
+        "label": {"type": "string"},
+        "cost": {"$ref": "#/$defs/money"},
+        "notes": {"type": "string"}
+      }
+    },
+    "dayPlan": {
+      "type": "object",
+      "required": ["day", "date", "area", "main_activity", "estimated_cost"],
+      "properties": {
+        "day": {"type": "integer", "minimum": 1},
+        "date": {"type": "string", "format": "date"},
+        "area": {"type": "string"},
+        "main_activity": {"type": "string"},
+        "secondary_activities": {"type": "array", "items": {"type": "string"}},
+        "time_window": {"type": "string"},
+        "transfer_notes": {"type": "string"},
+        "food_rest_notes": {"type": "string"},
+        "estimated_cost": {"$ref": "#/$defs/money"},
+        "reservation_notes": {"type": "array", "items": {"type": "string"}},
+        "backup_plan": {"type": ["string", "null"]}
+      }
+    }
+  }
+}
